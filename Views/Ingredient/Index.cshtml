@@ -1,0 +1,58 @@
+﻿@model IEnumerable<RecipeBook.Models.Ingredient>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Ingredient List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="Ingridient" asp-action="Create" class="btn btn-primary">
+                Create New Ingredient
+            </a>
+        </div>
+    </div>
+
+    <br /><br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Origin
+                    </th>
+                    <th>                    
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td width="50%">@obj.Name</td>
+                        <td width="30%">@obj.Origin</td>
+                        <td class="text-center btn-group" role="group">
+                            <a asp-controller="Category" asp-action="Edit" asp-route-key="@obj.Id" class="btn btn-primary">
+                                Edit
+                            </a>
+                            <a asp-controller="Category" asp-action="Delete" asp-route-key="@obj.Id" class="btn btn-danger">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h3>No ingredient exists</h3>
+    }
+</div>

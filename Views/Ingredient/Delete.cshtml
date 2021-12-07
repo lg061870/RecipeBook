@@ -1,0 +1,9 @@
+﻿@model RecipeBook.Models.Ingredient
+
+<h1>Delete</h1>
+<form method="post" asp-action="DeletePost">
+    <div asp-validation-summary="All" />
+    <input name="key" asp-for="Id" hidden />
+    <span>The record for recipe @Model.Name will be deleted</span>
+    <input type="submit" class="btn btn-primary" />
+</form>

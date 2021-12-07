@@ -1,0 +1,114 @@
+﻿@model RecipeBook.Models.Recipe
+
+<form method="post" asp-action="Create">
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <h2 class="text-info pl-3">Add Recipe</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Title"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Title" class="w-100" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-9">
+                        <input class="form-control" type="file" id="imageBrowser" accept=".jpg, .png, .jpeg">
+                        <div class="col-4">
+                            <div id="imagePreview" class="img-thumbnail" style="display:none">
+                                <img class="img-fluid" id="targetImage" />
+                                <div class="figure-caption">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="clearPreview()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                        </svg>
+                                        <span class="visually-hidden">Button</span>
+                                    </button>
+                                    <p id="description"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*<div class="col-4">
+                            <label asp-for="ImagePath"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="ImagePath" class="w-100" />
+                            <span asp-validation-for="ImagePath" class="text-danger"></span>
+                        </div>*@
+                </div>
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-100" value="Create" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">
+                                Back
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts{
+    @{
+       <partial name="_ValidationScriptsPartial" />
+
+        <script type="text/javascript"> 
+            $(document).ready(function () {
+                $("#imageBrowser").change(function () {
+                    var file = this.files;
+
+                    if (file && file[0]) {
+                        ReadImage(file[0]);
+                    }
+                })
+
+                var ReadImage = function (file) {
+                    var reader = new FileReader;
+                    var image = new Image;
+
+                    reader.readAsDataURL(file);
+
+                    reader.onload = function (_file) {
+                        image.src = _file.target.result;
+                        image.onload = function () {
+                            var height = this.height;
+                            var width = this.width;
+                            var type = file.type;
+                            var size = ~~(file.size / 1024) + "kb";
+
+                            $("#targetImage").attr('src', _file.target.result);
+                            $("#description").text("Size:" + size + ", " + height + " x " + width + "");
+                            $("#imagePreview").show();
+                        }
+                    }
+                }
+
+                var clearPreview = function () {
+                    $("#imageBrowser").val('');
+                    $("#description").text('');
+                    $("#imagePreview").hide();
+                }
+            })
+        </script>
+    }
+}
+
